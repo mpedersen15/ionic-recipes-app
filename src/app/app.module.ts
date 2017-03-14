@@ -1,7 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { CreateRecipePage } from '../pages/create-recipe/create-recipe';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
 import { RecipesPage } from '../pages/recipes/recipes';
@@ -11,7 +10,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
 	CreateRecipePage,
 	RecipeDetailsPage,
 	RecipesPage,
@@ -24,7 +22,6 @@ import { TabsPage } from '../pages/tabs/tabs';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
 	CreateRecipePage,
 	RecipeDetailsPage,
 	RecipesPage,
