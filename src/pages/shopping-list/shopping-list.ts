@@ -18,5 +18,9 @@ export class ShoppingListPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ShoppingListPage');
   }
+  
+  onAddItem(form){
+	  console.log(form);
+  }
 
 }

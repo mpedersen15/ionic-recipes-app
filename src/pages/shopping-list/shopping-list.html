@@ -9,18 +9,24 @@
 
 
 <ion-content padding>
-	<form>
+	<form #f="ngForm" novalidate (ngSubmit)="onAddItem(f)">
+	
 		<ion-list>
+		
 			<ion-item>
 				<ion-label floating>Ingredient</ion-label>
-				<ion-input type="text"></ion-input>
+				<ion-input type="text" name="ingredientName" required ngModel></ion-input>
 			</ion-item>
+			
 			<ion-item>
 				<ion-label floating>Quantity</ion-label>
-				<ion-input type="number"></ion-input>
+				<ion-input type="number" name="ingredientQuantity" required ngModel></ion-input>
 			</ion-item>
+			
 		</ion-list>
+		
+		<button ion-button type="submit" block color="secondary" [disabled]="!f.valid">Add items</button>
+
 	</form>
-	<button ion-button full color="secondary">Add items</button>
 
 </ion-content>
