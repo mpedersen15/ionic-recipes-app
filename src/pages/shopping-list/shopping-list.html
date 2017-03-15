@@ -9,18 +9,20 @@
 
 
 <ion-content padding>
-	<form #f="ngForm" novalidate (ngSubmit)="onAddItem(f)">
 	
+
+	<form #f="ngForm" novalidate (ngSubmit)="onAddItem(f)">
+
 		<ion-list>
-		
+			<ion-list-header>Add Items to Shopping List</ion-list-header>
 			<ion-item>
-				<ion-label floating>Ingredient</ion-label>
-				<ion-input type="text" name="ingredientName" required ngModel></ion-input>
+				<ion-label fixed>Ingredient</ion-label>
+				<ion-input type="text" name="ingredientName" placeholder="Ex. Milk" required ngModel></ion-input>
 			</ion-item>
 			
 			<ion-item>
-				<ion-label floating>Quantity</ion-label>
-				<ion-input type="number" name="ingredientQuantity" required ngModel></ion-input>
+				<ion-label fixed>Quantity</ion-label>
+				<ion-input type="number" name="ingredientQuantity"  placeholder="Ex. 1"required ngModel></ion-input>
 			</ion-item>
 			
 		</ion-list>
@@ -29,7 +31,13 @@
 
 	</form>
 
-	<ion-list>
+	
+	
+
+	<ion-list *ngIf="shoppingList.length">
+		<ion-list-header>
+			Shopping List
+		</ion-list-header>
 		<ion-item-sliding *ngFor="let item of shoppingList; let i = index">  
 			<ion-item >
 				<h3>{{item.name}}</h3>
@@ -43,5 +51,6 @@
 		</ion-item-sliding>
 		
 	</ion-list>
+	<p *ngIf="shoppingList.length === 0">Add items to your shopping list using the form above.</p>
 	
 </ion-content>

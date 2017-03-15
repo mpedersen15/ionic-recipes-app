@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { NavController,	NavParams,	ActionSheetController, AlertController, ToastController } from 'ionic-angular';
-
+import { RecipeService } from '../../services/recipe';
+import { Ingredient } from '../../models/ingredient.model';
+import { Recipe } from '../../models/recipe.model';
  @ Component({
 	selector: 'page-create-recipe',
 	templateUrl: 'create-recipe.html'
@@ -11,7 +13,9 @@ export class CreateRecipePage implements OnInit{
 	
 	selectOptions: string[] = ['Easy', 'Moderate', 'Difficult'];
 	
-	recipeForm: FormGroup
+	recipeForm: FormGroup;
+	recipe: Recipe;
+	index: number; 
 	
 	difficulty: string = "easy";
 
@@ -20,11 +24,12 @@ export class CreateRecipePage implements OnInit{
 		public navParams: NavParams, 
 		public actionSheetCtrl: ActionSheetController, 
 		public alertCtrl: AlertController,
-		public toastCtrl: ToastController
+		public toastCtrl: ToastController,
+		public recipeService: RecipeService
 	) {}
 
 	onManageIngredients() {
-		console.log('adding ingredients');
+		console.log('opening action sheet');
 
 		let actionSheet = this.actionSheetCtrl.create({
 				title: 'Manage Ingredients',
@@ -74,7 +79,28 @@ export class CreateRecipePage implements OnInit{
 	}
 
 	addRecipe() {
-		console.log('trying to add recipe');
+		console.log('trying to add recipe', this.recipeForm);
+		const value = this.recipeForm.value;
+		const ingredients = [];
+		if (value.ingredients.length){
+			
+			value.ingredients.forEach(name => {
+				ingredients.push(new Ingredient(name, 1));
+			});
+			
+			// alternative with MAP
+			/* ingredients = value.ingredients.map( name =>{
+				return {name: name, quantity: 1};
+			}) */
+		}
+		
+		if (this.mode === "Edit"){
+			this.recipeService.updateRecipe(this.index, value.title, value.description, value.difficulty, ingredients);
+		}else{
+			this.recipeService.addRecipe(value.title, value.description, value.difficulty, ingredients);
+		}
+		
+		this.navCtrl.popToRoot();
 	}
 
 	private createIngredientPrompt() {
@@ -126,21 +152,42 @@ export class CreateRecipePage implements OnInit{
 	}
 	
 	ngOnInit(){
+		console.log('create-recipe params',this.navParams);
 		this.mode = this.navParams.get('mode');
+		if (this.mode === "Edit"){
+			this.recipe = this.navParams.get('recipe');
+			this.index = this.navParams.get('index');
+		}
 		this.initializeForm();
 	}
 	
 	private initializeForm(){
+		let title = null;
+		let difficulty = 'Easy';
+		let description = null;
+		let ingredients = [];
+		
+		if (this.mode === "Edit"){
+			title = this.recipe.title;
+			difficulty = this.recipe.difficulty;
+			description = this.recipe.description;
+			
+			for (let ingredient of this.recipe.ingredients){
+				ingredients.push(new FormControl(ingredient.name, Validators.required));
+			}
+
+		}
+		
 		this.recipeForm = new FormGroup({
-			title: new FormControl(null, Validators.required),
-			description: new FormControl(null, Validators.required),
-			difficulty: new FormControl('Easy', Validators.required),
-			ingredients: new FormArray([])
+			title: new FormControl(title, Validators.required),
+			description: new FormControl(description, Validators.required),
+			difficulty: new FormControl(difficulty, Validators.required),
+			ingredients: new FormArray(ingredients)
 		});
 	}
 	
 	onSubmit(){
-		console.log(this.recipeForm);
+		console.log('on submit');
 	}
 
 }

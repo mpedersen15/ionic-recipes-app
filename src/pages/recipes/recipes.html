@@ -14,5 +14,19 @@
 
 
 <ion-content padding>
-
+	<ion-list *ngIf="recipes.length">
+		<ion-item-sliding  *ngFor="let recipe of recipes; let i = index">
+			<button ion-item (click)="onLoadRecipe(recipe, i)">
+				<h3>{{recipe.title}}</h3>
+				<p>{{recipe.description}}</p>
+			</button>
+			<ion-item-options side="right">
+				<button ion-button icon-only (click)="onDeleteRecipe(i)">
+					<ion-icon name="trash"></ion-icon>
+				</button>
+			</ion-item-options>
+		</ion-item-sliding>
+		
+	</ion-list>
+	<p *ngIf="recipes.length === 0">No recipes created yet. Press the + button to add a new recipe</p>
 </ion-content>
