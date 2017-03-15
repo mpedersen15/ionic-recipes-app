@@ -1,41 +1,38 @@
-import {
-	Component
-}
-from '@angular/core';
-import {
-	NavController,
-	NavParams,
-	ActionSheetController,
-	AlertController
-}
-from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NavController,	NavParams,	ActionSheetController, AlertController } from 'ionic-angular';
 
-/*
-Generated class for the CreateRecipe page.
-
-See http://ionicframework.com/docs/v2/components/#navigation for more info on
-Ionic pages and navigation.
- */
  @ Component({
 	selector: 'page-create-recipe',
 	templateUrl: 'create-recipe.html'
 })
-export class CreateRecipePage {
-
+export class CreateRecipePage implements OnInit{
+	mode: string = 'new';
+	
+	selectOptions: string[] = ['Easy', 'Moderate', 'Difficult'];
+	
+	recipeForm: FormGroup
+	
 	difficulty: string = "easy";
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, public alertCtrl: AlertController) {}
+	constructor( 	
+					public navCtrl: NavController, 
+					public navParams: NavParams, 
+					public actionSheetCtrl: ActionSheetController, 
+					public alertCtrl: AlertController
+				) {}
 
-	addIngredients() {
+	onManageIngredients() {
 		console.log('adding ingredients');
 
 		let actionSheet = this.actionSheetCtrl.create({
 				title: 'Manage Ingredients',
-				buttons: [{
-						text: 'Add Ingredients',
+				buttons: [
+					{
+						text: 'Add Ingredient',
 						handler: () => {
-							console.log('Add ingredients clicked');
-							this.showPrompt();
+							console.log('Add ingredient clicked');
+							this.showIngredientPromt();
 						}
 					}, {
 						text: 'Remove All Ingredients',
@@ -45,10 +42,7 @@ export class CreateRecipePage {
 						}
 					}, {
 						text: 'Cancel',
-						role: 'cancel',
-						handler: () => {
-							console.log('Cancel clicked');
-						}
+						role: 'cancel'
 					}
 				]
 			});
@@ -59,29 +53,48 @@ export class CreateRecipePage {
 		console.log('trying to add recipe');
 	}
 
-	showPrompt() {
+	private showIngredientPromt() {
 		let prompt = this.alertCtrl.create({
 				title: 'Add Ingredients',
 				message: "What would you like to add?",
-				inputs: [{
+				inputs: [
+					{
 						name: 'ingredient',
 						placeholder: 'Ingredient'
 					},
 				],
 				buttons: [{
 						text: 'Cancel',
-						handler: data => {
-							console.log('Cancel ingredient add');
-						}
+						role: 'cancel'
 					}, {
 						text: 'Add',
 						handler: data => {
 							console.log('Add ingredient', data);
+							if (data.name.trim() === '' || data.name === null){
+								// show toast to enter a valid ingredient
+							}
 						}
 					}
 				]
 			});
 		prompt.present();
+	}
+	
+	ngOnInit(){
+		this.mode = this.navParams.get('mode');
+		this.initializeForm();
+	}
+	
+	private initializeForm(){
+		this.recipeForm = new FormGroup({
+			title: new FormControl(null, Validators.required),
+			description: new FormControl(null, Validators.required),
+			difficulty: new FormControl('Easy', Validators.required)
+		});
+	}
+	
+	onSubmit(){
+		console.log(this.recipeForm);
 	}
 
 }

@@ -1,37 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Ingredient } from '../models/ingredient.interface';
+import { Ingredient } from '../models/ingredient.model';
 @Injectable()
 export class ShoppingListService{
 
 	private shoppingList: Ingredient[] = [];
 	
-	getShoppingList(){
+	getItems(){
 		return this.shoppingList.slice(0);
 	}
 	
-	addIngredientToList(item: Ingredient){
-		this.shoppingList.push(item);
+	addItem(name: string, quantity: number){
+		this.shoppingList.push(new Ingredient(name, quantity));
 	}
 	
-	addMultipleIngredients(items: Ingredient[]){
-		items.forEach(function(item){
-			this.addIngredientToList(item);
-		});
+	addItems(items: Ingredient[]){
+		this.shoppingList.push(...items);
 	}
 	
-	removeIngredientFromList(index){
-		console.log('in service delete', index , JSON.stringify(this.shoppingList));
-	
-		/* var indexOfItem = this.shoppingList.findIndex(function(itemEl){
-			return itemEl.name === item.name;
-		});
-		console.log('index of item to delete', indexOfItem); */
-
+	removeItem(index){
 		this.shoppingList.splice(index, 1);
-		console.log('in service, shoppingList', JSON.stringify(this.getShoppingList()));
-		
-		
-		
 	}
 	
 

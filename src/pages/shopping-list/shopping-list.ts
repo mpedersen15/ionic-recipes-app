@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
-import { Ingredient } from '../../models/ingredient.interface';
+import { Ingredient } from '../../models/ingredient.model';
 import { ShoppingListService } from '../../services/shopping-list';
 /*
   Generated class for the ShoppingList page.
@@ -16,32 +17,28 @@ export class ShoppingListPage {
 
 	shoppingList: Ingredient[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public shoppingListService: ShoppingListService) {}
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ShoppingListPage');
-  }
+	constructor(public navCtrl: NavController, public navParams: NavParams, public shoppingListService: ShoppingListService) {}
   
-	onAddItem(form){
-		console.log(form);
-
-		let newItem: Ingredient = {
-			name: form.value.ingredientName,
-			quantity: form.value.ingredientQuantity
-		}
+	onAddItem(form: NgForm){
+		this.shoppingListService.addItem(form.value.ingredientName, form.value.ingredientQuantity);
 		
-		this.shoppingListService.addIngredientToList(newItem);
-		
-		this.shoppingList = this.shoppingListService.getShoppingList();
-		
+		// Refresh the list
+		this.loadItems();
+		form.reset();
 	}
 	
-	deleteItem(index){
-		console.log('need to delete item', index);
-		this.shoppingListService.removeIngredientFromList(index);
-		this.shoppingList = this.shoppingListService.getShoppingList();
+	onDeleteItem(index: number){
+		this.shoppingListService.removeItem(index);
 		
-		console.log('component shopping list', JSON.stringify(this.shoppingList));
+		// Refresh the list
+		this.loadItems();
+	}
+	private loadItems(){
+		this.shoppingList = this.shoppingListService.getItems();
+	}
+	
+	ionViewWillEnter(){
+		this.loadItems();
 	}
 
 }
