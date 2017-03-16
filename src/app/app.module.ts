@@ -6,6 +6,8 @@ import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
 import { RecipesPage } from '../pages/recipes/recipes';
 import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { TabsPage } from '../pages/tabs/tabs';
+import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
 import { ShoppingListService } from '../services/shopping-list';
 import { RecipeService } from '../services/recipe';
 
@@ -16,7 +18,9 @@ import { RecipeService } from '../services/recipe';
 	RecipeDetailsPage,
 	RecipesPage,
 	ShoppingListPage,
-	TabsPage
+	TabsPage,
+	LoginPage,
+	SignupPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -28,7 +32,9 @@ import { RecipeService } from '../services/recipe';
 	RecipeDetailsPage,
 	RecipesPage,
 	ShoppingListPage,
-	TabsPage
+	TabsPage,
+	LoginPage,
+	SignupPage
   ],
   providers: [
 	{provide: ErrorHandler, useClass: IonicErrorHandler},

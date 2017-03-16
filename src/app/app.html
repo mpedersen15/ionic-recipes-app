@@ -1,1 +1,29 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+	<ion-header>
+		<ion-toolbar>
+			<ion-title></ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<ion-content>
+		<ion-list>
+			<button ion-item (click)="openPage(loginPage)">
+				Login
+			</button>
+			<button ion-item (click)="openPage(signupPage)">
+				Signup
+			</button>
+			
+			<button ion-item (click)="openPage(tabsPage)">
+				Tabs
+			</button>
+			
+			<button ion-item (click)="onLogout()">
+				Logout
+			</button>
+			
+		</ion-list>
+	</ion-content>
+</ion-menu>
+
+
+<ion-nav #content [root]="tabsPage"></ion-nav>
