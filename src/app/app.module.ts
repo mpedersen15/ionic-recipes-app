@@ -8,6 +8,8 @@ import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
+import { SlOptionsPage } from '../pages/sl-options/sl-options';
+import { RecipesOptionsPage } from '../pages/recipes-options/recipes-options';
 import { ShoppingListService } from '../services/shopping-list';
 import { RecipeService } from '../services/recipe';
 import { AuthService } from '../services/auth';
@@ -21,7 +23,9 @@ import { AuthService } from '../services/auth';
 	ShoppingListPage,
 	TabsPage,
 	LoginPage,
-	SignupPage
+	SignupPage,
+	SlOptionsPage,
+	RecipesOptionsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -35,7 +39,9 @@ import { AuthService } from '../services/auth';
 	ShoppingListPage,
 	TabsPage,
 	LoginPage,
-	SignupPage
+	SignupPage,
+	SlOptionsPage,
+	RecipesOptionsPage
   ],
   providers: [
 	{provide: ErrorHandler, useClass: IonicErrorHandler},
