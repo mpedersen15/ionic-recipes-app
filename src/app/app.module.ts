@@ -10,6 +10,7 @@ import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { ShoppingListService } from '../services/shopping-list';
 import { RecipeService } from '../services/recipe';
+import { AuthService } from '../services/auth';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { RecipeService } from '../services/recipe';
   providers: [
 	{provide: ErrorHandler, useClass: IonicErrorHandler},
 	ShoppingListService,
-	RecipeService
+	RecipeService,
+	AuthService
   ]
 })
 export class AppModule {}
