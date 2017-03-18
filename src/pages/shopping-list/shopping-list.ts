@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NavController, NavParams, PopoverController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, LoadingController, AlertController, Events } from 'ionic-angular';
 import { Ingredient } from '../../models/ingredient.model';
 import { ShoppingListService } from '../../services/shopping-list';
 import { AuthService } from '../../services/auth';
@@ -19,7 +19,9 @@ import { SlOptionsPage } from '../sl-options/sl-options';
 export class ShoppingListPage implements OnInit {
 
 	shoppingList: Ingredient[];
-
+	subscription;
+	itemsLoaded = false;
+	
 	constructor(
 		public navCtrl: NavController, 
 		public navParams: NavParams, 
@@ -27,8 +29,9 @@ export class ShoppingListPage implements OnInit {
 		public popoverCtrl: PopoverController,
 		public loadingCtrl: LoadingController,
 		public authService: AuthService,
-		public alertCtrl: AlertController
-	) {}
+		public alertCtrl: AlertController,
+		public events: Events
+	) {	}
   
 	onAddItem(form: NgForm){
 		this.shoppingListService.addItem(form.value.ingredientName, form.value.ingredientQuantity);
@@ -53,6 +56,20 @@ export class ShoppingListPage implements OnInit {
 	}
 	
 	ngOnInit(){
+		
+		let loader = this.loadingCtrl.create({
+			content: 'Loading...'
+		});
+		loader.present();
+		
+		this.subscription = this.events.subscribe('data:fetch',(dataFetched) => {
+			console.log('event received', dataFetched);
+			if (dataFetched){
+				this.loadItems();
+				console.log('list page items', this.shoppingList);
+				loader.dismiss();
+			}
+		});
 		this.loadItems();
 	}
 	
@@ -124,6 +141,10 @@ export class ShoppingListPage implements OnInit {
 		
 		errorAlert.present();
 		
+	}
+	
+	ngOnDestroy(){
+		if (this.subscription) this.subscription.unsubscribe();
 	}
 
 }
