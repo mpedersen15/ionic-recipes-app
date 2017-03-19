@@ -55,8 +55,14 @@ export class ShoppingListPage implements OnInit {
 		this.loadItems();
 	}
 	
+	ionViewDidLoad(){
+		console.log('shopping list view did load');
+	}
+	
 	ngOnInit(){
 		
+		if (this.shoppingListService.itemsLoaded) return
+		console.log('shopping list init');
 		let loader = this.loadingCtrl.create({
 			content: 'Loading...'
 		});
@@ -68,6 +74,7 @@ export class ShoppingListPage implements OnInit {
 				this.loadItems();
 				console.log('list page items', this.shoppingList);
 				loader.dismiss();
+				this.shoppingListService.itemsLoaded = true;
 			}
 		});
 		this.loadItems();

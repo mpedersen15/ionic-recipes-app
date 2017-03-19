@@ -10,7 +10,7 @@ export class ShoppingListService{
 	constructor(public http: Http, public authService: AuthService){}
 
 	private shoppingList: Ingredient[] = [];
-	
+	public itemsLoaded = false;
 	getItems(){
 		console.log('in getItems service', this.shoppingList);
 		return this.shoppingList.slice(0);
